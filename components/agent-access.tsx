@@ -131,6 +131,43 @@ export function AgentAccess() {
           ссылку для оплаты; оплату клиент подтверждает у провайдера.
         </p>
       </div>
+      {view?.owner && (
+        <div className="rounded-2xl border border-site-accent/40 bg-site-surface p-5 space-y-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <h3 className="font-semibold text-site-accent">
+              Owner MCP — Управление для Codex и Antigravity
+            </h3>
+            <span className="rounded-md bg-site-accent/10 px-2 py-0.5 text-xs font-medium text-site-accent">
+              Streamable HTTP (2026-07-28)
+            </span>
+          </div>
+          <p className="break-all font-mono text-sm">{endpoint}/owner</p>
+          <p className="text-sm leading-6 text-site-muted">
+            Выделенный контур управления сайтом. Позволяет AI-агентам владельца
+            (Codex, Antigravity) инспектировать состояние движка, читать
+            конфигурацию и страницы, готовить Change Sets через Git.
+          </p>
+          <div className="space-y-1 rounded-xl bg-site-background p-3 font-mono text-xs text-site-muted">
+            <p className="font-semibold text-site-ink">
+              Конфигурация Codex (~/.codex/config.json):
+            </p>
+            <pre className="overflow-x-auto whitespace-pre">
+              {JSON.stringify(
+                {
+                  mcpServers: {
+                    northstar: {
+                      url: `${endpoint}/owner`,
+                      headers: { Authorization: 'Bearer <OWNER_TOKEN>' },
+                    },
+                  },
+                },
+                null,
+                2,
+              )}
+            </pre>
+          </div>
+        </div>
+      )}
       {secret && (
         <section className="rounded-2xl border border-site-accent bg-site-surface p-5 space-y-3">
           <h3 className="font-semibold">Сохраните токен сейчас</h3>
