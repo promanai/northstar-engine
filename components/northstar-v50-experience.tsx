@@ -47,11 +47,11 @@ export function NorthstarV50Experience() {
   // 1. Theme sync
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('ns-theme');
-      if (saved === 'dark' || saved === 'light') {
-        setTheme(saved);
-        document.body.classList.toggle('dark', saved === 'dark');
-      }
+      const saved = localStorage.getItem('ns-theme') || 'light';
+      setTheme(saved as 'light' | 'dark');
+      document.body.classList.toggle('dark', saved === 'dark');
+      document.documentElement.classList.toggle('dark', saved === 'dark');
+      document.documentElement.setAttribute('data-theme', saved);
     } catch {
       // ignore
     }
@@ -60,6 +60,8 @@ export function NorthstarV50Experience() {
   const handleSetTheme = (newTheme: 'light' | 'dark') => {
     setTheme(newTheme);
     document.body.classList.toggle('dark', newTheme === 'dark');
+    document.documentElement.classList.toggle('dark', newTheme === 'dark');
+    document.documentElement.setAttribute('data-theme', newTheme);
     try {
       localStorage.setItem('ns-theme', newTheme);
     } catch {
@@ -1078,32 +1080,32 @@ export function NorthstarV50Experience() {
 
                         {/* Progress Block */}
                         {turn.block === 'progress' && (
-                          <div className="progress mt-4 rounded-xl border border-site-line overflow-hidden">
-                            <div className="progressTop p-3 flex justify-between items-center border-b border-site-line bg-site-surface">
+                          <div className="progress mt-4">
+                            <div className="progressTop">
                               <strong>Анализ сайта и подготовка аудита…</strong>
-                              <span className="progressPct text-xs text-site-muted">75%</span>
+                              <span className="progressPct">75%</span>
                             </div>
-                            <div className="progressBar h-1 bg-site-line">
-                              <div className="h-full bg-site-ink w-3/4 transition-all duration-500" />
+                            <div className="progressBar">
+                              <i style={{ width: '75%' }} />
                             </div>
-                            <div className="steps grid grid-cols-2 sm:grid-cols-4 divide-x divide-site-line text-xs">
-                              <div className="step p-3 done">
-                                <div className="stepIcon mb-2 font-bold">✓</div>
+                            <div className="steps">
+                              <div className="step done">
+                                <div className="stepIcon font-bold">✓</div>
                                 <b>1. Контент</b>
                                 <span>Структура и тексты</span>
                               </div>
-                              <div className="step p-3 done">
-                                <div className="stepIcon mb-2 font-bold">✓</div>
+                              <div className="step done">
+                                <div className="stepIcon font-bold">✓</div>
                                 <b>2. SEO и CWV</b>
                                 <span>Скорость и доступность</span>
                               </div>
-                              <div className="step p-3 done">
-                                <div className="stepIcon mb-2 font-bold">✓</div>
+                              <div className="step done">
+                                <div className="stepIcon font-bold">✓</div>
                                 <b>3. AI-readiness</b>
                                 <span>MCP и интеграции</span>
                               </div>
-                              <div className="step p-3">
-                                <div className="stepIcon mb-2">4</div>
+                              <div className="step">
+                                <div className="stepIcon">4</div>
                                 <b>4. Итог</b>
                                 <span>Сравнение и план</span>
                               </div>
@@ -1114,65 +1116,75 @@ export function NorthstarV50Experience() {
                         {/* Audit Scores & Comparison Block */}
                         {turn.block === 'audit' && (
                           <div className="auditResult mt-4 space-y-4">
-                            <div className="scoreGrid rounded-xl overflow-hidden border border-site-line">
-                              <div className="score p-4 bg-site-surface">
+                            <div className="scoreGrid">
+                              <div className="score">
                                 <small>PERFORMANCE</small>
                                 <strong>92</strong>
                                 <p>LCP 1.1s · CLS 0.01 · Fast Cloudflare edge</p>
                               </div>
-                              <div className="score p-4 bg-site-surface">
+                              <div className="score">
                                 <small>AI READINESS</small>
                                 <strong>88</strong>
                                 <p>MCP protocol · Markdown structured schema</p>
                               </div>
-                              <div className="score p-4 bg-site-surface">
+                              <div className="score">
                                 <small>MOBILE &amp; UX</small>
                                 <strong>94</strong>
                                 <p>Responsive touch · Telegram WebApp ready</p>
                               </div>
-                              <div className="score p-4 bg-site-surface">
+                              <div className="score">
                                 <small>SEO &amp; A11Y</small>
                                 <strong>96</strong>
                                 <p>Semantic HTML · High-contrast typography</p>
                               </div>
                             </div>
 
-                            <div className="variants grid sm:grid-cols-2 gap-4">
-                              <div className="variant selected p-4 rounded-xl border border-site-ink bg-site-surface">
-                                <div className="flex justify-between items-center mb-2">
-                                  <small className="text-xs text-site-muted">ВАРИАНТ A</small>
-                                  <span className="text-xs px-2 py-0.5 rounded bg-site-ink text-site-surface">
+                            <div className="variants">
+                              <div className="variant selected">
+                                <div className="variantHead">
+                                  <div>
+                                    <small>ВАРИАНТ A</small>
+                                    <h3>AI-first Minimal</h3>
+                                  </div>
+                                  <span style={{ background: 'var(--inverse)', color: 'var(--inverseText)', padding: '4px 8px', borderRadius: '6px', fontSize: '11px', fontWeight: 600 }}>
                                     РЕКОМЕНДУЕМЫЙ
                                   </span>
                                 </div>
-                                <h4 className="font-semibold text-base mb-1">AI-first Minimal</h4>
-                                <p className="text-xs text-site-muted mb-3">
-                                  Максимальная скорость, диалог в центре, чистая типографика.
-                                </p>
-                                <button
-                                  type="button"
-                                  className="btn primary w-full text-xs"
-                                  onClick={() => setActiveModal('plans')}
-                                >
-                                  Выбрать вариант A · Заказать $499
-                                </button>
+                                <div style={{ padding: '16px 18px' }}>
+                                  <p style={{ margin: '0 0 14px', color: 'var(--muted)', fontSize: '13px', lineHeight: 1.5 }}>
+                                    Максимальная скорость, диалог в центре, чистая типографика.
+                                  </p>
+                                  <button
+                                    type="button"
+                                    className="btn primary"
+                                    style={{ width: '100%' }}
+                                    onClick={() => setActiveModal('plans')}
+                                  >
+                                    Выбрать вариант A · Заказать $499
+                                  </button>
+                                </div>
                               </div>
 
-                              <div className="variant p-4 rounded-xl border border-site-line bg-site-surface">
-                                <div className="flex justify-between items-center mb-2">
-                                  <small className="text-xs text-site-muted">ВАРИАНТ B</small>
+                              <div className="variant">
+                                <div className="variantHead">
+                                  <div>
+                                    <small>ВАРИАНТ B</small>
+                                    <h3>Brand + Content</h3>
+                                  </div>
                                 </div>
-                                <h4 className="font-semibold text-base mb-1">Brand + Content</h4>
-                                <p className="text-xs text-site-muted mb-3">
-                                  Больше визуального контента, каталог и медиа-акценты.
-                                </p>
-                                <button
-                                  type="button"
-                                  className="btn w-full text-xs"
-                                  onClick={() => setActiveModal('plans')}
-                                >
-                                  Выбрать вариант B · Заказать $499
-                                </button>
+                                <div style={{ padding: '16px 18px' }}>
+                                  <p style={{ margin: '0 0 14px', color: 'var(--muted)', fontSize: '13px', lineHeight: 1.5 }}>
+                                    Больше визуального контента, каталог и медиа-акценты.
+                                  </p>
+                                  <button
+                                    type="button"
+                                    className="btn"
+                                    style={{ width: '100%' }}
+                                    onClick={() => setActiveModal('plans')}
+                                  >
+                                    Выбрать вариант B · Заказать $499
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>

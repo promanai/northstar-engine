@@ -199,23 +199,60 @@ select {
 }
 
 /* Semantic tokens shared by every screen and scoped theme preview. */
-:root,
 [data-site-theme='northstar'] {
+  color-scheme: light;
+  --bg: #f8f9fb;
+  --panel: #ffffff;
+  --soft: #f0f3f8;
+  --soft2: #e6ebf2;
+  --text: #0b0f19;
+  --muted: #475467;
+  --faint: #667085;
+  --line: #e2e8f0;
+  --line2: #cbd5e1;
+  --site-page: var(--bg);
+  --site-surface: var(--panel);
+  --site-raised: var(--soft);
+  --site-line: var(--line);
+  --site-ink: var(--text);
+  --site-muted: var(--muted);
+  --site-subtle: var(--faint);
+  --site-accent: #2563eb;
+  --site-accent-ink: #1d4ed8;
+  --site-accent-hover: #1e40af;
+  --site-on-accent: #ffffff;
+  --site-success: var(--success, #027a48);
+  --site-shadow: var(--shadow, 0 16px 56px rgb(0 0 0 / 0.06));
+  --site-heading: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+body.dark [data-site-theme='northstar'],
+html.dark[data-site-theme='northstar'],
+html[data-site-theme='northstar'].dark,
+[data-site-theme='northstar'].dark {
   color-scheme: dark;
-  --site-page: #101419;
-  --site-surface: #171d24;
-  --site-raised: #242e3a;
-  --site-line: #3c4959;
-  --site-ink: #f1f5f9;
-  --site-muted: #b6c2d1;
-  --site-subtle: #a4b2c4;
+  --bg: #050505;
+  --panel: #0b0b0b;
+  --soft: #111111;
+  --soft2: #181818;
+  --text: #f5f5f5;
+  --muted: #a4a4a4;
+  --faint: #777777;
+  --line: #292929;
+  --line2: #3b3b3b;
+  --site-page: var(--bg);
+  --site-surface: var(--panel);
+  --site-raised: var(--soft);
+  --site-line: var(--line);
+  --site-ink: var(--text);
+  --site-muted: var(--muted);
+  --site-subtle: var(--faint);
   --site-accent: #b7cbe3;
   --site-accent-ink: #c2d5ed;
   --site-accent-hover: #d2e1f3;
   --site-on-accent: #162536;
-  --site-success: #80e8a5;
-  --site-shadow: 0 16px 56px rgb(0 0 0 / 0.18);
-  --site-heading: var(--font-geist-sans), system-ui, sans-serif;
+  --site-success: var(--success, #80e8a5);
+  --site-shadow: var(--shadow, 0 16px 56px rgb(0 0 0 / 0.18));
 }
 [data-site-theme='editorial'] {
   color-scheme: light;
@@ -252,8 +289,8 @@ select {
   --site-heading: var(--font-geist-sans), system-ui, sans-serif;
 }
 body {
-  background: var(--site-page);
-  color: var(--site-ink);
+  background: var(--bg, var(--site-page));
+  color: var(--text, var(--site-ink));
 }
 h1,
 h2 {
