@@ -37,8 +37,13 @@ next-env.d.ts
 /.deployment
 /.wrangler/
 /.wrangler-state/
-/deployment/**
-/tests/**
+
+# tests local state
+/tests/.wrangler/
+
+# deployment local state and sensitive configs
+/deployment/.wrangler/
+/deployment/oravera.lite.json
 /*.test-state*/
 /*-cookies.txt
 /.dev.vars*

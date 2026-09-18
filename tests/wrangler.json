@@ -1,0 +1,32 @@
+{
+  "name": "northstar-security-test",
+  "main": "../dist/server/index.js",
+  "compatibility_date": "2026-05-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "no_bundle": true,
+  "rules": [{ "type": "ESModule", "globs": ["**/*.js", "**/*.mjs"] }],
+  "assets": { "directory": "../dist/client" },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "northstar-security-test",
+      "database_id": "00000000-0000-4000-8000-000000000001",
+      "migrations_dir": "../drizzle"
+    }
+  ],
+  "r2_buckets": [
+    { "binding": "FILES", "bucket_name": "northstar-security-test" }
+  ],
+  "vars": {
+    "FILES_USER_MAX_COUNT": "2",
+    "FILES_SITE_MAX_COUNT": "6",
+    "FILES_USER_MAX_BYTES": "65536",
+    "FILES_SITE_MAX_BYTES": "131072",
+    "INITIAL_ADMIN_TOKEN": "test-only-initial-admin-token-0000000000",
+    "OPENAI_API_KEY": "",
+    "XAI_API_KEY": "",
+    "PAYMENT_WEBHOOK_SECRET": "test-only-payment-secret-not-for-production",
+    "UPDATE_RUNNER_SECRET": "test-only-update-secret-not-for-production",
+    "UPDATE_RUNNER_REPOSITORY": "test-owner/control"
+  }
+}

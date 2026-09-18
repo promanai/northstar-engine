@@ -1,0 +1,27 @@
+{
+  "name": "oravera-standard-local",
+  "main": "../dist/server/index.js",
+  "no_bundle": true,
+  "rules": [{ "type": "ESModule", "globs": ["**/*.js", "**/*.mjs"] }],
+  "assets": { "directory": "../dist/client" },
+  "compatibility_date": "2026-05-15",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "oravera-standard-local",
+      "database_id": "00000000-0000-4000-8000-000000000014",
+      "migrations_dir": "../drizzle"
+    }
+  ],
+  "vars": {
+    "ENGINE_MODE": "standard",
+    "SITE_PRESET": "oravera",
+    "AI_PAID_REQUESTS_ENABLED": "false",
+    "LITE_HEALTH_DATA_ENABLED": "false",
+    "LITE_LEADS_ENABLED": "false",
+    "LITE_AI_ENABLED": "false",
+    "LITE_VOICE_ENABLED": "false"
+  }
+}
