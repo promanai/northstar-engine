@@ -2,12 +2,10 @@
 import type { Metadata } from 'next';
 import { requestLocale } from '@/lib/locale-server';
 import { translate } from '@/lib/translations';
-import { HomeExperience } from '@/components/home-experience';
-import { SiteHeader } from '@/components/site-header';
+import { NorthstarV50Experience } from '@/components/northstar-v50-experience';
 import { WebMcpBridge } from '@/components/webmcp-bridge';
 import { isLite } from '@/lib/engine-mode';
 import { publicSiteConfig } from '@/lib/site-config-service';
-import { SiteName } from '@/components/engine-provider';
 import { env } from 'cloudflare:workers';
 import { liteSite } from '@/lib/lite-content';
 import { dentalChatAvailable } from '@/lib/dental-policy';
@@ -44,30 +42,9 @@ export default function Home() {
       />
     );
   return (
-    <main className="home-page site-theme-scope min-h-dvh bg-site-page text-site-ink">
+    <>
       <WebMcpBridge />
-      <SiteHeader />
-      <HomeExperience />
-      <footer className="home-footer border-t border-site-line px-4 py-3 text-sm text-site-muted sm:px-8">
-        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-x-6 gap-y-1">
-          <p className="text-xs">
-            <SiteName />
-          </p>
-          {!isLite() && (
-            <nav
-              aria-label="Навигация в подвале"
-              className="flex flex-wrap gap-4"
-            >
-              <a href="/account" className="hover:text-site-accent-ink">
-                Кабинет
-              </a>
-              <a href="/admin" className="hover:text-site-accent-ink">
-                Админка
-              </a>
-            </nav>
-          )}
-        </div>
-      </footer>
-    </main>
+      <NorthstarV50Experience />
+    </>
   );
 }

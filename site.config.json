@@ -1,10 +1,56 @@
 {
   "name": "Northstar",
-  "description": "Услуги и консультации — задайте свой вопрос ассистенту",
+  "description": "AI-native сайт для бизнеса за $499. Сайт + Telegram WebApp + AI-консультант. Deploy в ваш Cloudflare. AI на сайте — от $20 в месяц.",
   "theme": "northstar",
-  "backgroundImage": "",
-  "products": [],
+  "backgroundImage": "/northstar-background.png",
+  "products": [
+    {
+      "id": "northstar-website",
+      "slug": "website-setup",
+      "title": "Создание AI-native сайта",
+      "kind": "service",
+      "shortDescription": "Сайт + Telegram WebApp + AI-консультант с развёртыванием в Cloudflare",
+      "description": "Полный запуск AI-native сайта в вашей собственной инфраструктуре Cloudflare. Включает 2 дизайн-варианта, AI-редактирование, интеграцию с Telegram WebApp и подключение AI-агента.",
+      "price": 49900,
+      "currency": "USD",
+      "active": true
+    },
+    {
+      "id": "northstar-ai-core",
+      "slug": "ai-subscription-core",
+      "title": "AI-подписка Core",
+      "kind": "service",
+      "shortDescription": "Базовый уровень AI-агента для сайта и Telegram",
+      "description": "Ежемесячный базовый тариф AI-агента для регулярного потока консультаций, ответов по каталогу и приёма заявок.",
+      "price": 2000,
+      "currency": "USD",
+      "active": true
+    }
+  ],
   "pages": [
-    { "slug": "/about", "title": "О нас", "description": "Помогаем разобраться в услугах и выбрать подходящее решение.", "text": "Задайте вопрос консультанту на главной странице. Он расскажет об услугах и условиях работы." }
+    {
+      "slug": "/how",
+      "title": "Как это работает?",
+      "description": "От задачи до работающего AI-native сайта за 4 шага в вашем Cloudflare.",
+      "text": "Northstar объединяет аудит, проектирование, AI-редактирование, AI-консультанта, Telegram WebApp и deploy в Cloudflare в одном процессе. Код, данные и домен остаются в аккаунте владельца."
+    },
+    {
+      "slug": "/about",
+      "title": "О нас",
+      "description": "Автоматизированная компания, где AI-агенты и люди работают вместе.",
+      "text": "Northstar строится как automation-first компания. AI-агенты берут на себя исследование, анализ, подготовку и проверки. Люди определяют цели, принимают ключевые решения и контролируют качество."
+    },
+    {
+      "slug": "/plans",
+      "title": "AI-тарифы",
+      "description": "Создание сайта $499 один раз. AI от $20 в месяц по подписке.",
+      "text": "Создание Northstar оплачивается отдельно от AI. Вы получаете AI-native сайт + Telegram WebApp и разворачиваете их в своём Cloudflare. После запуска выбираете подходящий AI-тариф."
+    },
+    {
+      "slug": "/partners",
+      "title": "Партнёрам",
+      "description": "Партнёрская программа и запуск AI-native сайтов для агентств и студий.",
+      "text": "Запускайте современные AI-native сайты для своих клиентов с доходом от создания и ежемесячных AI-подписок."
+    }
   ]
 }
