@@ -1,0 +1,5 @@
+{
+  "engine": "northstar-engine",
+  "updateProtocol": 1,
+  "migrationPolicy": "additive"
+}

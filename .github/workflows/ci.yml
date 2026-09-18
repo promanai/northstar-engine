@@ -1,0 +1,80 @@
+name: Quality gate
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: quality-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run audit:security
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:launch-browser
+      - run: npm run lint
+      - run: npx tsc --noEmit
+      - run: npm run build
+      - run: npm run test:integration
+      - run: npm run test:lite:stability
+      - run: npm run test:oravera
+      - run: npm run test:oravera-account
+      - run: npm run test:acceptance
+      - name: Save local acceptance report (no database dumps)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: standard-local-acceptance
+          path: |
+            dist/engine-build.json
+            .test-state-acceptance-*/acceptance-report.json
+            .test-state-acceptance-*/standard-smoke-report.json
+            .test-state-launch-browser-*/report.json
+            .test-state-launch-browser-*/*.png
+            .test-state-lite-*/lead-browser-report.json
+            .test-state-lite-*/lead-*.png
+            .test-state-lite-stability-*/stability-report.json
+            .test-state-oravera-*/report.json
+            .test-state-oravera-*/*.png
+            .test-state-oravera-account-*/account-report.json
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: 14
+      - run: npm run db:preflight -- --config deployment/lite.example.json --production
+      - name: Start Worker for contract smoke
+        shell: bash
+        run: |
+          npm run start -- --port 8787 > "$RUNNER_TEMP/northstar-worker.log" 2>&1 &
+          echo $! > "$RUNNER_TEMP/northstar-worker.pid"
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8787/api/health > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat "$RUNNER_TEMP/northstar-worker.log"
+          exit 1
+      - run: npm run check:contract
+        env:
+          CONTRACT_BASE_URL: http://127.0.0.1:8787
+      - name: Stop Worker
+        if: always()
+        shell: bash
+        run: |
+          if [ -f "$RUNNER_TEMP/northstar-worker.pid" ]; then kill "$(cat "$RUNNER_TEMP/northstar-worker.pid")" || true; fi
+          if [ -f "$RUNNER_TEMP/northstar-worker.log" ]; then tail -n 80 "$RUNNER_TEMP/northstar-worker.log"; fi

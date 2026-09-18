@@ -1,0 +1,35 @@
+{
+  "name": "OraVera",
+  "description": "Dental clinic in Miami. Ask about a dental examination and learn how to request a visit.",
+  "businessType": "dental",
+  "locale": "en",
+  "theme": "northstar",
+  "backgroundImage": "",
+  "products": [],
+  "pages": [
+    {
+      "slug": "/about",
+      "title": "OraVera dental clinic in Miami",
+      "description": "Start with an in-person dental examination",
+      "text": "OraVera is a dental clinic in Miami. This website is being prepared for appointment requests. The clinic has not yet published its street address, phone number, fees, dentist details or appointment availability. The assistant is an AI, not a dentist. A photo cannot replace a clinical examination. No appointment is confirmed through a chat message."
+    },
+    {
+      "slug": "/dental-exam",
+      "title": "Request a dental examination",
+      "description": "A request is the first step, not a confirmed appointment",
+      "text": "An in-person examination lets a dentist assess your oral health and discuss appropriate next steps. Fees, insurance arrangements, clinician availability and opening hours must be confirmed by the clinic. When appointment requests are enabled, submit only your name, contact details and preferred callback or visit times. Do not put symptoms, diagnoses, photographs or payment information in the appointment request. Wait for the clinic to confirm a date, time and dentist. Do not delay urgent care while waiting for an online reply."
+    },
+    {
+      "slug": "/photo-guidance",
+      "title": "Sharing an oral photo",
+      "description": "Optional supporting context, never a diagnosis",
+      "text": "Photo sharing is optional and remains disabled until the clinic approves its health-data processing arrangements. Once enabled, the selected image and your chat messages are sent to the configured AI provider after your consent. This does not send the image to a dentist or place it in a clinical record. Avoid faces, names, documents and unnecessary identifying details. Do not put sharp objects in your mouth or manipulate a painful area to take a photo. The AI cannot rule out disease or determine treatment from a photograph. A dentist must assess you. If you have trouble breathing or swallowing, call 911 or seek emergency care now; do not wait for a chat reply."
+    },
+    {
+      "slug": "/privacy",
+      "title": "Before sharing information",
+      "description": "Health-data features are not yet open for patient use",
+      "text": "This is a preparation notice, not the clinic's approved privacy notice. Do not submit personal health information while the site is in preview. Where patient accounts are available, the site stores account details and appointment records in its database. This is not a clinical record, and medical photos are not stored in the account. AI chat, photo sharing and external contact forms are separate features that require review before activation; an enabled external form transmits only its stated fields to its named recipient. The clinic must publish the responsible entity, contact, processing purposes, vendors, retention and patient-rights information before collecting patient data. Consent alone does not establish compliance."
+    }
+  ]
+}

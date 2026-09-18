@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'sha256-SCRIPT_HASH'; style-src 'unsafe-inline'; connect-src 'none'; img-src data:; form-action 'none'; base-uri 'none'; object-src 'none'"
+    />
+    <meta name="referrer" content="no-referrer" />
+    <title>Паспорт запуска — Northstar</title>
+    <style>
+      :root {
+        font:
+          16px/1.55 system-ui,
+          sans-serif;
+        color: #e8edf6;
+        background: #101721;
+        color-scheme: dark;
+        --muted: #b7c5d9;
+        --edge: #40526b;
+        --accent: #a6e3da;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button {
+        max-width: 100%;
+        overflow-wrap: anywhere;
+        cursor: pointer;
+        border: 1px solid var(--edge);
+        background: #202e40;
+        color: inherit;
+        border-radius: 0.65rem;
+        padding: 0.6rem 0.85rem;
+        min-height: 44px;
+      }
+      button:hover {
+        background: #30445c;
+      }
+      button:disabled {
+        opacity: 0.55;
+        cursor: not-allowed;
+      }
+      button[aria-pressed='true'],
+      button.primary {
+        background: var(--accent);
+        color: #102c2c;
+        border-color: var(--accent);
+      }
+      :focus-visible {
+        outline: 3px solid #a6e3da;
+        outline-offset: 3px;
+      }
+      a {
+        color: var(--accent);
+      }
+      h1,
+      h2,
+      h3,
+      p {
+        margin: 0;
+      }
+      h1 {
+        font-size: 1.3rem;
+      }
+      h2 {
+        font-size: 1.55rem;
+        line-height: 1.25;
+      }
+      h3 {
+        font-size: 1rem;
+      }
+      small,
+      .muted {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      header {
+        border-bottom: 1px solid var(--edge);
+        padding: 1rem 1.5rem;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .toolbar {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .brand {
+        min-width: 0;
+        max-width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+      }
+      .mark {
+        flex-shrink: 0;
+        width: 2.4rem;
+        height: 2.4rem;
+        display: grid;
+        place-items: center;
+        background: var(--accent);
+        color: #102c2c;
+        border-radius: 0.65rem;
+        font-weight: 800;
+      }
+      .notice {
+        padding: 0.7rem 1.5rem;
+        border-bottom: 1px solid var(--edge);
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(230px, 290px) minmax(0, 1fr);
+        max-width: 1400px;
+        margin: auto;
+      }
+      .sidebar {
+        padding: 1.25rem;
+        border-right: 1px solid var(--edge);
+        min-width: 0;
+      }
+      .summary {
+        display: grid;
+        gap: 0.65rem;
+        margin-bottom: 1.25rem;
+      }
+      progress {
+        width: 100%;
+        height: 10px;
+        accent-color: var(--accent);
+      }
+      .steps {
+        display: grid;
+        gap: 0.4rem;
+      }
+      .stage {
+        color: var(--muted);
+        font-size: 0.9rem;
+        margin: 1.2rem 0 0.4rem;
+      }
+      .step {
+        text-align: left;
+        display: grid;
+        gap: 0.15rem;
+        width: 100%;
+        background: transparent;
+        overflow-wrap: anywhere;
+      }
+      .step[aria-current='step'] {
+        border-color: var(--accent);
+        background: #243b42;
+      }
+      .step small {
+        font-size: 0.85rem;
+      }
+      .workspace {
+        padding: 1.5rem;
+        min-width: 0;
+      }
+      .meta {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 180px;
+        gap: 1rem;
+        margin-bottom: 1.3rem;
+      }
+      label {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        display: grid;
+        gap: 0.5rem;
+      }
+      input,
+      select,
+      textarea {
+        color: inherit;
+        background: #162231;
+        border: 1px solid var(--edge);
+        border-radius: 0.6rem;
+        padding: 0.7rem;
+        width: 100%;
+        min-width: 0;
+      }
+      textarea {
+        min-height: 6.5rem;
+        resize: vertical;
+      }
+      #evidence {
+        min-height: 5rem;
+      }
+      #editor {
+        max-width: 800px;
+      }
+      .eyebrow {
+        color: var(--accent);
+        font-size: 0.9rem;
+        margin: 1.3rem 0 0.4rem;
+      }
+      .form {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1.2rem;
+        margin-top: 1.4rem;
+      }
+      .criteria {
+        min-width: 0;
+        overflow-wrap: anywhere;
+        padding: 1rem;
+        background: #182737;
+        border: 1px solid var(--edge);
+        border-radius: 0.8rem;
+      }
+      .criteria ul {
+        margin: 0.5rem 0 0;
+        padding-left: 1.3rem;
+      }
+      .criteria li + li {
+        margin-top: 0.35rem;
+      }
+      .dependencies {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-top: 0.8rem;
+      }
+      .dependencies button {
+        font-size: 0.9rem;
+      }
+      .actions {
+        display: flex;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+        margin-top: 1.2rem;
+      }
+      .message {
+        margin: 0.8rem 0;
+        min-height: 1.6rem;
+        color: #beeade;
+        overflow-wrap: anywhere;
+      }
+      .message.error {
+        color: #ffc3c3;
+      }
+      #graph {
+        overflow: auto;
+        max-height: 65vh;
+        background: #14202e;
+        border: 1px solid var(--edge);
+        border-radius: 0.8rem;
+        margin-top: 1rem;
+      }
+      #graph svg {
+        display: block;
+      }
+      .node {
+        cursor: pointer;
+      }
+      .node:hover rect,
+      .node:focus rect {
+        stroke: #a6e3da;
+        stroke-width: 3;
+      }
+      .node text {
+        fill: #eef4ff;
+        font:
+          14px system-ui,
+          sans-serif;
+        pointer-events: none;
+      }
+      .node .status-text {
+        fill: #c1cede;
+        font-size: 13px;
+      }
+      [hidden] {
+        display: none !important;
+      }
+      .save-status {
+        overflow-wrap: anywhere;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+      .empty {
+        padding: 1rem;
+        border: 1px dashed var(--edge);
+        border-radius: 0.65rem;
+      }
+      .audit-list {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+      .audit-card {
+        min-width: 0;
+        padding: 1rem;
+        border: 1px solid var(--edge);
+        border-radius: 0.8rem;
+        background: #162231;
+        overflow-wrap: anywhere;
+      }
+      .audit-card p {
+        margin-top: 0.5rem;
+        white-space: pre-wrap;
+      }
+      .audit-status {
+        font-weight: 600;
+        color: var(--accent);
+      }
+      .audit-card[data-status='fail'] .audit-status {
+        color: #ffc3c3;
+      }
+      .audit-card[data-status='warn'] .audit-status {
+        color: #f5d699;
+      }
+      .audit-card[data-status='manual'] .audit-status {
+        color: #c7d8f5;
+      }
+      #audit-controls {
+        margin-top: 1rem;
+        max-width: 30rem;
+      }
+      #audit-warning {
+        margin-top: 1rem;
+      }
+      code {
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+      }
+      .brand > div,
+      .form > *,
+      .actions > * {
+        min-width: 0;
+      }
+      p,
+      h1,
+      h2,
+      h3 {
+        overflow-wrap: anywhere;
+      }
+      [aria-invalid='true'] {
+        border-color: #ffb6b6;
+      }
+      @media (max-width: 760px) {
+        header,
+        .notice {
+          padding: 1rem;
+        }
+        .layout {
+          grid-template-columns: 1fr;
+        }
+        .sidebar {
+          border-right: 0;
+          border-bottom: 1px solid var(--edge);
+          padding: 1rem;
+        }
+        .steps {
+          max-height: 220px;
+          overflow: auto;
+        }
+        .workspace {
+          padding: 1rem;
+        }
+        .meta {
+          grid-template-columns: 1fr;
+        }
+        .toolbar button {
+          flex: 1;
+        }
+        .toolbar {
+          width: 100%;
+        }
+        h2 {
+          font-size: 1.35rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="brand">
+        <span class="mark" aria-hidden="true">N</span>
+        <div>
+          <h1>Паспорт запуска</h1>
+          <p class="muted">От замысла до первого клиента</p>
+        </div>
+      </div>
+      <div class="toolbar">
+        <button id="open">Открыть файл</button
+        ><button id="save" class="primary">Сохранить JSON</button
+        ><button id="report">Скачать чеклист</button>
+      </div>
+    </header>
+    <div class="notice">
+      Локальный мастер · Ответы не отправляются в сеть. Не вводите пароли и
+      ключи. После работы сохраните JSON-файл — автосохранения нет.
+    </div>
+    <input type="file" id="file" accept="application/json,.json" hidden />
+    <input type="file" id="audit-file" accept="application/json,.json" hidden />
+    <input
+      type="file"
+      id="audit-compare-file"
+      accept="application/json,.json"
+      hidden
+    />
+    <div class="layout">
+      <aside class="sidebar">
+        <div class="summary">
+          <strong id="progress-text"></strong
+          ><progress
+            id="progress"
+            max="100"
+            value="0"
+            aria-label="Закрытые шаги"
+          ></progress>
+          <p class="muted">
+            Это заполнение плана, не автоматический аудит сайта.
+          </p>
+          <button id="next">Следующий доступный шаг</button>
+        </div>
+        <nav class="steps" id="steps" aria-label="Этапы запуска"></nav>
+      </aside>
+      <main class="workspace">
+        <div class="meta">
+          <label
+            >Название сайта<input
+              id="site"
+              maxlength="200"
+              placeholder="Например, OraVera" /></label
+          ><label
+            >Режим паспорта<select id="mode">
+              <option value="lite">Lite</option>
+              <option value="standard">Standard</option>
+            </select></label
+          >
+        </div>
+        <p class="muted">
+          Режим здесь меняет только чеклист, не настройки опубликованного сайта.
+        </p>
+        <div class="actions" role="group" aria-label="Вид плана">
+          <button id="list-tab" aria-pressed="true">Вопросы</button
+          ><button id="graph-tab" aria-pressed="false">
+            Граф зависимостей
+          </button>
+          <button id="audit-tab" aria-pressed="false">Аудит сайта</button>
+        </div>
+        <p id="message" class="message" role="status" aria-live="polite"></p>
+        <p id="save-status" class="save-status">
+          Новый паспорт · пока только в этой вкладке
+        </p>
+        <section id="audit-panel" aria-labelledby="audit-title" hidden>
+          <h2 id="audit-title" tabindex="-1">Аудит подготовки сайта</h2>
+          <p class="muted">
+            Локальный отчёт об исходниках, не проверка опубликованного сайта.
+            Просмотр не меняет ответы и статусы паспорта.
+          </p>
+          <div class="actions">
+            <button id="audit-open" class="primary">Открыть отчёт JSON</button>
+            <button id="audit-clear" hidden>Убрать отчёт</button>
+            <button id="audit-compare" hidden>Сверить с новым отчётом</button>
+          </div>
+          <p
+            id="audit-message"
+            class="message"
+            role="status"
+            aria-live="polite"
+          ></p>
+          <div id="audit-empty" class="empty">
+            <p>
+              Создайте отчёт в каталоге нужного сайта и выберите полученный
+              файл:
+            </p>
+            <code
+              >npm run launch -- audit --mode lite --json --output
+              .northstar-launch/source-audit.json</code
+            >
+            <p class="muted">
+              Для Standard укажите --mode standard. Выберите новое имя файла,
+              если отчёт уже существует. Сервер мастера не читает файлы
+              автоматически.
+            </p>
+          </div>
+          <div id="audit-results" hidden>
+            <p id="audit-warning" class="empty"></p>
+            <p id="audit-source" class="message"></p>
+            <p
+              id="audit-comparison"
+              class="empty"
+              role="status"
+              aria-live="polite"
+            >
+              Сверка ещё не выполнена
+            </p>
+            <p id="audit-summary" class="message" role="status"></p>
+            <label id="audit-controls"
+              >Показать результаты
+              <select id="audit-filter">
+                <option value="attention">Требуют внимания</option>
+                <option value="all">Все результаты</option>
+                <option value="fail">Ошибки</option>
+                <option value="warn">Предупреждения</option>
+                <option value="manual">Ручная проверка</option>
+                <option value="pass">Пройденные проверки</option>
+              </select>
+            </label>
+            <div id="audit-list" class="audit-list"></div>
+          </div>
+        </section>
+        <section id="graph-panel" hidden>
+          <h2>Что зависит от чего</h2>
+          <p class="muted">
+            Выберите узел, чтобы перейти к вопросам. Стрелки ведут от условия к
+            следующему шагу. Граф можно прокручивать.
+          </p>
+          <div
+            id="graph"
+            tabindex="0"
+            aria-label="Прокручиваемый граф зависимостей"
+          ></div>
+        </section>
+        <section id="editor">
+          <p id="stage" class="eyebrow"></p>
+          <h2 id="title" tabindex="-1"></h2>
+          <p id="task-status" class="muted"></p>
+          <div id="deps" class="dependencies"></div>
+          <form id="form" class="form">
+            <div id="questions" class="form"></div>
+            <div class="criteria">
+              <h3>Когда можно считать выполненным</h3>
+              <ul id="criteria"></ul>
+            </div>
+            <label
+              >Доказательство проверки<textarea
+                id="evidence"
+                maxlength="4000"
+                placeholder="Что проверено, кем и когда; ссылка или путь к отчёту без секретов"
+              ></textarea></label
+            ><label
+              >Статус шага<select id="status">
+                <option value="todo">Не начато</option>
+                <option value="in_progress">В работе</option>
+                <option value="done">Выполнено</option>
+                <option value="not_applicable">Не требуется</option>
+              </select></label
+            ><label id="reason-label"
+              >Почему шаг не требуется<textarea
+                id="reason"
+                maxlength="1000"
+              ></textarea>
+            </label>
+            <p class="muted">
+              «Выполнено» требует ответов и доказательства. Незакрытые
+              зависимости всё равно блокируют приёмку.
+            </p>
+            <div class="actions">
+              <button class="primary" type="submit">Применить шаг</button
+              ><button id="forward" type="button">Далее по списку</button>
+            </div>
+          </form>
+        </section>
+      </main>
+    </div>
+    <noscript
+      >Для локального мастера нужен JavaScript. Обычный Markdown-чеклист
+      доступен в комплекте движка.</noscript
+    >
+    <!--WIZARD_SCRIPT-->
+  </body>
+</html>

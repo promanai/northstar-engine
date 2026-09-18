@@ -1,0 +1,1 @@
+ALTER TABLE `api_tokens` ADD `audience` text DEFAULT 'account' NOT NULL;
