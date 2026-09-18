@@ -19,6 +19,10 @@ import {
   dentalRequestAllowed,
   dentalSystemPolicy,
 } from './dental-policy';
+import {
+  handleOwnerMcpGet,
+  handleOwnerMcpPost,
+} from './owner-mcp-route';
 
 const json = (value: unknown, status = 200) =>
   Response.json(value, { status, headers: { 'cache-control': 'no-store' } });
@@ -468,6 +472,13 @@ export async function liteApi(request: Request): Promise<Response> {
       return await chat(request);
     if (request.method === 'POST' && path === '/api/mcp')
       return await mcp(request);
+    if (path === '/api/mcp/owner') {
+      if (request.method === 'GET' || request.method === 'HEAD')
+        return await handleOwnerMcpGet();
+      if (request.method === 'POST')
+        return await handleOwnerMcpPost(request);
+      return json({ error: 'Method not allowed' }, 405);
+    }
     if (request.method === 'GET' || request.method === 'HEAD') {
       if (path === '/api/health') return json(healthPayload('lite'));
       if (path === '/api/settings')
