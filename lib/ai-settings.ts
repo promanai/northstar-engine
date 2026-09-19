@@ -9,6 +9,7 @@ import {
 import { RequestFailure } from './request-security';
 
 export function providerKey(provider: AiProvider) {
+  if (provider === 'promanos') return env.PROMANOS_API_KEY;
   return provider === 'openai' ? env.OPENAI_API_KEY : env.XAI_API_KEY;
 }
 export async function readAiSettings(): Promise<AiView> {
@@ -18,6 +19,7 @@ export async function readAiSettings(): Promise<AiView> {
     .bind('main')
     .first<{ revision: number; config: string }>();
   const credentials = {
+    promanos: !!env.PROMANOS_API_KEY?.trim(),
     openai: !!env.OPENAI_API_KEY?.trim(),
     xai: !!env.XAI_API_KEY?.trim(),
   };

@@ -12,7 +12,7 @@ const profile = {
   ],
   properties: {
     enabled: { type: 'boolean' },
-    provider: { type: 'string', enum: ['openai', 'xai'] },
+    provider: { type: 'string', enum: ['openai', 'xai', 'promanos'] },
     model: {
       type: 'string',
       maxLength: 128,
@@ -133,7 +133,7 @@ export const aiPaths = {
               required: ['action', 'provider'],
               properties: {
                 action: { type: 'string', enum: ['models'] },
-                provider: { type: 'string', enum: ['openai', 'xai'] },
+                provider: { type: 'string', enum: ['openai', 'xai', 'promanos'] },
               },
             },
             {
