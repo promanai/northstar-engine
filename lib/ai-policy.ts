@@ -1,6 +1,6 @@
 // Shared, credential-free validation for the admin UI and Worker adapters.
 import type { AiBudgetView } from './ai-budget-policy';
-export type AiProvider = 'openai' | 'xai';
+export type AiProvider = 'openai' | 'xai' | 'promanos';
 export type AiTask = 'chat' | 'text';
 export type AiProfile = {
   enabled: boolean;
@@ -10,6 +10,9 @@ export type AiProfile = {
   temperature: number | null;
   maxOutputTokens: number;
   timeoutSeconds: number;
+  fallbackEnabled?: boolean;
+  fallbackProvider?: AiProvider;
+  fallbackModel?: string;
 };
 export type AiConfig = Record<AiTask, AiProfile>;
 export type AiView = {
@@ -19,14 +22,19 @@ export type AiView = {
   source: 'saved' | 'environment';
   credentials: Record<AiProvider, boolean>;
 };
-export const providerNames = { openai: 'OpenAI', xai: 'xAI' };
+export const providerNames: Record<AiProvider, string> = {
+  promanos: 'PromanOS',
+  openai: 'OpenAI',
+  xai: 'xAI',
+};
 export const taskNames = { chat: 'Консультант', text: 'Генерация текстов' };
 export const suggestedModels: Record<AiProvider, string[]> = {
+  promanos: ['pro-1'],
   openai: ['gpt-4o-mini', 'gpt-4.1-mini', 'gpt-5.6-luna', 'gpt-6-astra'],
   xai: ['grok-4.6', 'grok-4.5'],
 };
 export function isProvider(value: unknown): value is AiProvider {
-  return value === 'openai' || value === 'xai';
+  return value === 'openai' || value === 'xai' || value === 'promanos';
 }
 export function isTask(value: unknown): value is AiTask {
   return value === 'chat' || value === 'text';
@@ -40,6 +48,9 @@ export function defaultProfile(provider: AiProvider = 'openai'): AiProfile {
     temperature: null,
     maxOutputTokens: 4096,
     timeoutSeconds: 60,
+    fallbackEnabled: false,
+    fallbackProvider: 'openai',
+    fallbackModel: 'gpt-4o-mini',
   };
 }
 // Intentionally conservative: unknown/special-purpose models use API defaults.
@@ -47,7 +58,10 @@ export function defaultProfile(provider: AiProvider = 'openai'): AiProfile {
 export function modelCapabilities(provider: AiProvider, model: string) {
   let efforts: string[] = [];
   let temperature = false;
-  if (provider === 'openai') {
+  if (provider === 'promanos') {
+    temperature = true;
+    efforts = ['none', 'low', 'medium', 'high'];
+  } else if (provider === 'openai') {
     if (/^gpt-6-astra(?:-\d{4}-\d{2}-\d{2})?$/.test(model))
       efforts = ['low', 'medium', 'high', 'xhigh', 'max'];
     if (/^gpt-5\.6-luna(?:-\d{4}-\d{2}-\d{2})?$/.test(model))
@@ -120,6 +134,9 @@ export function validateProfile(value: unknown): AiProfile {
     temperature: p.temperature as number | null,
     maxOutputTokens: p.maxOutputTokens,
     timeoutSeconds: p.timeoutSeconds,
+    fallbackEnabled: typeof p.fallbackEnabled === 'boolean' ? p.fallbackEnabled : false,
+    fallbackProvider: isProvider(p.fallbackProvider) ? p.fallbackProvider : undefined,
+    fallbackModel: typeof p.fallbackModel === 'string' && /^[a-zA-Z0-9][a-zA-Z0-9._:-]{0,127}$/.test(p.fallbackModel) ? p.fallbackModel : undefined,
   };
 }
 export function validateConfig(value: unknown): AiConfig {

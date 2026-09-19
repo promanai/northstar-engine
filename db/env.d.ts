@@ -40,6 +40,8 @@ declare namespace Cloudflare {
     FILES_SITE_MAX_COUNT?: string;
     OPENAI_API_KEY?: string;
     XAI_API_KEY?: string;
+    PROMANOS_API_KEY?: string;
+    PROMANOS_BASE_URL?: string;
     INITIAL_ADMIN_TOKEN?: string;
     OPENAI_MODEL?: string;
     PAYMENT_PROVIDER_URL?: string;

@@ -103,6 +103,7 @@ export function AiModels() {
   const [view, setView] = useState<AiView | null>(null);
   const [config, setConfig] = useState<AiConfig | null>(null);
   const [models, setModels] = useState<Record<AiProvider, string[]>>({
+    promanos: [],
     openai: [],
     xai: [],
   });
@@ -253,9 +254,9 @@ export function AiModels() {
           )}
           <section
             aria-label="Подключения"
-            className="grid min-w-0 gap-3 md:grid-cols-2"
+            className="grid min-w-0 gap-3 md:grid-cols-3"
           >
-            {(['openai', 'xai'] as const).map((provider) => (
+            {(['promanos', 'openai', 'xai'] as const).map((provider) => (
               <div
                 key={provider}
                 className="min-w-0 rounded-2xl border border-site-line bg-site-surface p-5"
@@ -264,18 +265,29 @@ export function AiModels() {
                   <h3 className="font-semibold">{providerNames[provider]}</h3>
                   <span className="text-sm text-site-muted">
                     {view.credentials[provider]
-                      ? 'Ключ задан · доступ ещё не проверен'
+                      ? 'Ключ задан · готов к работе'
                       : 'Ключ не задан'}
                   </span>
+                </div>
+                <div className="mt-2 flex flex-wrap gap-1">
+                  <span className="rounded-md bg-site-raised px-2 py-0.5 text-xs text-site-muted">Text ✓</span>
+                  <span className="rounded-md bg-site-raised px-2 py-0.5 text-xs text-site-muted">Streaming ✓</span>
+                  <span className="rounded-md bg-site-raised px-2 py-0.5 text-xs text-site-muted">Vision ✓</span>
+                  <span className="rounded-md bg-site-raised px-2 py-0.5 text-xs text-site-muted">Voice ✓</span>
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-site-muted">
                   Добавьте{' '}
                   <code>
-                    {provider === 'openai' ? 'OPENAI_API_KEY' : 'XAI_API_KEY'}
+                    {provider === 'promanos'
+                      ? 'PROMANOS_API_KEY'
+                      : provider === 'openai'
+                        ? 'OPENAI_API_KEY'
+                        : 'XAI_API_KEY'}
                   </code>{' '}
-                  в Cloudflare → Worker → Settings → Variables and Secrets. Для
-                  локального запуска — в .env, затем перезапустите сервис. Ключ
-                  не передаётся в браузер и не хранится в базе сайта.
+                  в Cloudflare → Worker → Settings → Variables and Secrets.
+                  {provider === 'promanos' && (
+                    <> Дополнительно: <code>PROMANOS_BASE_URL</code> (по умолчанию <code>https://api.promanos.com/v1</code>).</>
+                  )}
                 </p>
                 <Button
                   type="button"
@@ -500,6 +512,53 @@ export function AiModels() {
                           }
                         />
                       </div>
+                    </div>
+                    <div className="mt-5 rounded-xl border border-site-line bg-site-raised p-4 space-y-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <h4 className="text-sm font-semibold">Резервный провайдер (Fallback)</h4>
+                          <p className="text-xs text-site-muted">Используется при сбоях сети или 5xx основного провайдера (не срабатывает при 401/402)</p>
+                        </div>
+                        <Switch
+                          id={`${task}-fallback-enabled`}
+                          checked={profile.fallbackEnabled ?? false}
+                          onCheckedChange={(fallbackEnabled) => change(task, { fallbackEnabled })}
+                        />
+                      </div>
+                      {profile.fallbackEnabled && (
+                        <div className="grid gap-4 pt-2 sm:grid-cols-2">
+                          <Choice
+                            id={`${task}-fallback-provider`}
+                            label="Резервный провайдер"
+                            value={profile.fallbackProvider || 'openai'}
+                            options={Object.entries(providerNames)
+                              .filter(([p]) => p !== profile.provider)
+                              .map(([value, label]) => ({ value, label }))}
+                            onChange={(value) => {
+                              const p = value as AiProvider;
+                              change(task, {
+                                fallbackProvider: p,
+                                fallbackModel: suggestedModels[p][0],
+                              });
+                            }}
+                          />
+                          <Choice
+                            id={`${task}-fallback-model`}
+                            label="Резервная модель"
+                            value={profile.fallbackModel || suggestedModels[profile.fallbackProvider || 'openai'][0]}
+                            options={[
+                              ...new Set([
+                                profile.fallbackModel || '',
+                                ...models[profile.fallbackProvider || 'openai'],
+                                ...suggestedModels[profile.fallbackProvider || 'openai'],
+                              ]),
+                            ]
+                              .filter(Boolean)
+                              .map((value) => ({ value, label: value }))}
+                            onChange={(fallbackModel) => change(task, { fallbackModel })}
+                          />
+                        </div>
+                      )}
                     </div>
                     <p className="mt-4 text-sm leading-relaxed text-site-muted">
                       Лимит включает рассуждение и видимый ответ. Высокие уровни

@@ -5,6 +5,7 @@ import { defineConfig } from 'vite';
 import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync, mkdirSync, writeFileSync } from 'node:fs';
 import { createBuildStamp } from './scripts/build-stamp.mjs';
+import pkg from './package.json';
 import hostingConfig from './.openai/hosting.json';
 import siteContent from './site.config.json';
 import { validateLiteConfig } from './scripts/lite-config.mjs';
@@ -16,7 +17,7 @@ const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
 
 const { d1, r2 } = hostingConfig;
 const standard = process.env.ENGINE_MODE === 'standard';
-const buildVersion = process.env.ENGINE_BUILD_VERSION || '0.4.0';
+const buildVersion = process.env.ENGINE_BUILD_VERSION || pkg.version;
 const buildRepository = process.env.ENGINE_BUILD_REPOSITORY || '';
 const buildSha = process.env.ENGINE_BUILD_SHA || '';
 const buildStamp = createBuildStamp(process.cwd(), {
