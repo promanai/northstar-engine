@@ -41,11 +41,11 @@ export async function hashPassword(password: string) {
     ['deriveBits'],
   );
   const bits = await crypto.subtle.deriveBits(
-    { name: 'PBKDF2', salt, iterations: 120000, hash: 'SHA-256' },
+    { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
     key,
     256,
   );
-  return `pbkdf2$120000$${toBase64Url(salt)}$${toBase64Url(new Uint8Array(bits))}`;
+  return `pbkdf2$100000$${toBase64Url(salt)}$${toBase64Url(new Uint8Array(bits))}`;
 }
 
 export async function verifyPassword(password: string, stored: string) {
