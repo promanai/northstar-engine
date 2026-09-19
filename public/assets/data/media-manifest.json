@@ -1,0 +1,53 @@
+{
+  "version": "production-candidate-06-external-media",
+  "basePath": "/assets/images",
+  "hero": {
+    "assistant": "assets/images/hero/ora-assistant.webp"
+  },
+  "services": {
+    "implant": "assets/images/services/implant.webp",
+    "veneers": "assets/images/services/veneers.webp",
+    "crown": "assets/images/services/crown.webp",
+    "emergency": "assets/images/services/emergency.webp",
+    "cleaning": "assets/images/services/cleaning.webp",
+    "exam": "assets/images/services/exam.webp"
+  },
+  "works": {
+    "urgent": {
+      "card": "assets/images/work/urgent-card.webp",
+      "gallery": [
+        "assets/images/work/urgent-01.webp",
+        "assets/images/work/urgent-02.webp"
+      ]
+    },
+    "veneers": {
+      "card": "assets/images/work/veneers-card.webp",
+      "gallery": [
+        "assets/images/work/veneers-01.webp",
+        "assets/images/work/veneers-02.webp"
+      ]
+    },
+    "crown": {
+      "card": "assets/images/work/crown-card.webp",
+      "gallery": [
+        "assets/images/work/crown-01.webp",
+        "assets/images/work/crown-02.webp"
+      ]
+    },
+    "implant": {
+      "card": "assets/images/work/implant-card.webp",
+      "gallery": [
+        "assets/images/work/implant-card.webp",
+        "assets/images/services/implant.webp"
+      ]
+    }
+  },
+  "reviews": [
+    "assets/images/reviews/review-01.webp",
+    "assets/images/reviews/review-02.webp",
+    "assets/images/reviews/review-03.webp"
+  ],
+  "about": {
+    "doctor": "assets/images/about/doctor.webp"
+  }
+}
